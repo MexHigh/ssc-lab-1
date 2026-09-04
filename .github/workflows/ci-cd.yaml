@@ -156,10 +156,10 @@ jobs:
 
   provenance:
     needs: [build-and-push]
-    #permissions:
-    #  actions: read
-    #  id-token: write
-    #  packages: write
+    permissions:
+      actions: read
+      packages: write
+      id-token: write
     uses: slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@v2.1.0
     with:
       image: ${{ vars.DOCKERHUB_USERNAME }}/cicd-demo-app
