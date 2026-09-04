@@ -91,9 +91,21 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  sast:
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Semgrep
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: p/python
+
   build-and-push:
     runs-on: ubuntu-latest
-    needs: [dependency-scan, secret-scan]
+    needs: [dependency-scan, secret-scan, sast]
     outputs:
       image_digest: ${{ steps.build.outputs.digest }}
       image_ref: ${{ steps.meta.outputs.tags }}
